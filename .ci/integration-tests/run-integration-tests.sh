@@ -30,6 +30,6 @@ set -e
 #    sleep 10
 #done
 
-docker run --rm --privileged -v /lib/modules:/lib/modules -v /usr/src/kernels:/usr/src/kernels:ro -v ../../:/HIRS hirs/hirs-ci:tpmprovisioner /bin/bash -c "/HIRS/.ci/integration-tests/setup-tpmprovisioner.sh"
+docker run --rm --privileged -v /lib/modules:/lib/modules -v /usr/src:/usr/src -v /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu -v $(pwd):/HIRS hirs/hirs-ci:tpmprovisioner /bin/bash -c "/HIRS/.ci/integration-tests/setup-tpmprovisioner.sh"
 
 echo "Environment Stand-Up Complete!"

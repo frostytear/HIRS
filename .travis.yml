@@ -6,14 +6,14 @@ sudo: true
 language: java
 
 env:
-  - SUBPROJECT=HIRS_Utils
-  - SUBPROJECT=HIRS_Provisioner
-  - SUBPROJECT=HIRS_ProvisionerTPM2
-  - SUBPROJECT=HIRS_Structs
-  - SUBPROJECT=HIRS_AttestationCA
-  - SUBPROJECT=HIRS_AttestationCAPortal
+#  - SUBPROJECT=HIRS_Utils
+#  - SUBPROJECT=HIRS_Provisioner
+#  - SUBPROJECT=HIRS_ProvisionerTPM2
+#  - SUBPROJECT=HIRS_Structs
+#  - SUBPROJECT=HIRS_AttestationCA
+#  - SUBPROJECT=HIRS_AttestationCAPortal
   - SUBPROJECT=TPM_Utils
-  - SUBPROJECT=tpm_module
+#  - SUBPROJECT=tpm_module
 
 services:
   - docker
@@ -40,7 +40,9 @@ jobs:
 #    - script: docker run --rm -v $(pwd):/HIRS hirs/hirs-ci:ubuntu18 /bin/bash -c "cd /HIRS; ./package/package.ubuntu.sh"
 #      env: null
 #      name: "Package Ubuntu"
+# TODO: If libssl1.0.0 doesn't work then we may have to make it available in the Docker container
     - stage: integration-tests
-      script: .ci/integration-tests/./run-integration-tests.sh
+      install: sudo apt-get -y install linux-headers-$(uname -r); sudo ln -s /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build
+      script: ldconfig -p | grep libcrypto; .ci/integration-tests/./run-integration-tests.sh
       env: null
       name: "Integration Tests"
